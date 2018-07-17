@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(WindowsTargetPlatformVersion)'==''">
+    <LatestTargetPlatformVersion>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetLatestSDKTargetPlatformVersion('Windows', '10.0'))</LatestTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)' == ''">$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
+    <TargetPlatformVersion>$(WindowsTargetPlatformVersion)</TargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>summer3</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_debug</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_debug</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\libs\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\src;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Rope;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src\ConvexDecomposition;..\..\..\addons\ofxBox2d\libs\triangle;..\..\..\addons\ofxBox2d\libs\triangle\src;..\..\..\addons\ofxBox2d\libs\triangle\src\triangle;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxGrt\src;..\..\..\addons\ofxGrt\libs\grt;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <AdditionalOptions>-DNO_TIMER</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\libs\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\src;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Rope;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src\ConvexDecomposition;..\..\..\addons\ofxBox2d\libs\triangle;..\..\..\addons\ofxBox2d\libs\triangle\src;..\..\..\addons\ofxBox2d\libs\triangle\src\triangle;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxGrt\src;..\..\..\addons\ofxGrt\libs\grt;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>-DNO_TIMER</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\libs\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\src;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Rope;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src\ConvexDecomposition;..\..\..\addons\ofxBox2d\libs\triangle;..\..\..\addons\ofxBox2d\libs\triangle\src;..\..\..\addons\ofxBox2d\libs\triangle\src\triangle;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxGrt\src;..\..\..\addons\ofxGrt\libs\grt;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>-DNO_TIMER</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\libs\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\src;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints;..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Rope;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src;..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src\ConvexDecomposition;..\..\..\addons\ofxBox2d\libs\triangle;..\..\..\addons\ofxBox2d\libs\triangle\src;..\..\..\addons\ofxBox2d\libs\triangle\src\triangle;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxGrt\src;..\..\..\addons\ofxGrt\libs\grt;..\..\..\addons\ofxGui\src;..\..\..\addons\ofxOsc\libs;..\..\..\addons\ofxOsc\libs\oscpack;..\..\..\addons\ofxOsc\libs\oscpack\src;..\..\..\addons\ofxOsc\libs\oscpack\src\ip;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\posix;..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32;..\..\..\addons\ofxOsc\libs\oscpack\src\osc;..\..\..\addons\ofxOsc\src</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <AdditionalOptions>-DNO_TIMER</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2d.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dBaseShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dCircle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dConvexPoly.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dEdge.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dPolygon.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dRect.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2CollideCircle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2CollideEdge.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2CollidePolygon.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2Collision.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2Distance.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2DynamicTree.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2TimeOfImpact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2ChainShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2CircleShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2EdgeShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2PolygonShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2BlockAllocator.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2Draw.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2Math.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2Settings.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2StackAllocator.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2Timer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2Body.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2ContactManager.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2Fixture.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2Island.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2World.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2WorldCallbacks.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2CircleContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2Contact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2ContactSolver.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2EdgeAndCircleContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2EdgeAndPolygonContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2PolygonContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2DistanceJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2FrictionJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2GearJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2Joint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2MotorJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2MouseJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2PrismaticJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2PulleyJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2RevoluteJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2RopeJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Rope\b2Rope.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src\ConvexDecomposition\b2Polygon.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src\ConvexDecomposition\b2Triangle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\triangle\src\triangle\del_impl.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\src\ofxGrtBarPlot.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\src\ofxGrtMatrixPlot.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\src\ofxGrtSettings.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\src\ofxGrtTimeseriesPlot.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\AdaBoost.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\WeakClassifiers\DecisionStump.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\WeakClassifiers\RadialBasisFunction.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\WeakClassifiers\WeakClassifier.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\ANBC\ANBC.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\ANBC\ANBC_Model.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\BAG\BAG.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTree.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTreeClusterNode.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTreeNode.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTreeThresholdNode.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTreeTripleFeatureNode.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DTW\DTW.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\FiniteStateMachine\FiniteStateMachine.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\GMM\GMM.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\HMM\ContinuousHiddenMarkovModel.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\HMM\DiscreteHiddenMarkovModel.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\HMM\HMM.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\KNN\KNN.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\MinDist\MinDist.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\MinDist\MinDistModel.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\ParticleClassifier\ParticleClassifier.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\RandomForests\RandomForests.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\Softmax\Softmax.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\SVM\LIBSVM\libsvm.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\SVM\SVM.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\SwipeDetector\SwipeDetector.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\ClusterTree\ClusterTree.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\GaussianMixtureModels\GaussianMixtureModels.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\HierarchicalClustering\HierarchicalClustering.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\KMeans\KMeans.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\SelfOrganizingMap\SelfOrganizingMap.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ContextModules\Gate.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\BernoulliRBM\BernoulliRBM.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\MovementDetector\MovementDetector.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\PrincipalComponentAnalysis\PrincipalComponentAnalysis.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\Tree\Node.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\Tree\Tree.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\Classifier.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\Clusterer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\Context.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\FeatureExtraction.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\GestureRecognitionPipeline.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\GRTBase.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\MLBase.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\PostProcessing.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\PreProcessing.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\Regressifier.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\ClassificationData.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\ClassificationDataStream.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\ClassificationSample.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\MatrixFloat.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\RegressionData.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\RegressionSample.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\TimeSeriesClassificationData.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\TimeSeriesClassificationSample.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\UnlabelledData.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\VectorFloat.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\EnvelopeExtractor\EnvelopeExtractor.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\FFT\FastFourierTransform.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\FFT\FFT.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\FFT\FFTFeatures.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\KMeansFeatures\KMeansFeatures.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\KMeansQuantizer\KMeansQuantizer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\MovementIndex\MovementIndex.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\MovementTrajectoryFeatures\MovementTrajectoryFeatures.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\RBMQuantizer\RBMQuantizer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\SOMQuantizer\SOMQuantizer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\TimeDomainFeatures\TimeDomainFeatures.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\TimeseriesBuffer\TimeseriesBuffer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\ZeroCrossingCounter\ZeroCrossingCounter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PostProcessingModules\ClassLabelChangeFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PostProcessingModules\ClassLabelFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PostProcessingModules\ClassLabelTimeoutFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\DeadZone.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\Derivative.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\DoubleMovingAverageFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\FIRFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\HighPassFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\LeakyIntegrator.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\LowPassFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\MedianFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\MovingAverageFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\RMSFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\SavitzkyGolayFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\WeightedAverageFilter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\ArtificialNeuralNetworks\MLP\MLP.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\ArtificialNeuralNetworks\MLP\Neuron.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\LinearRegression\LinearRegression.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\LogisticRegression\LogisticRegression.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\MultidimensionalRegression\MultidimensionalRegression.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\RegressionTree\RegressionTree.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Cholesky.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\DebugLog.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\EigenvalueDecomposition.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ErrorLog.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\InfoLog.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\LUDecomposition.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Metrics.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\PeakDetection.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Random.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\RangeTracker.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\SVD.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TestingLog.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ThreadPool.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ThresholdCrossingDetector.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TimeSeriesClassificationSampleTrimmer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TrainingDataRecordingTimer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TrainingLog.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Util.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\WarningLog.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxInputField.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtils.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocket.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\chainEvent.h" />
+    <ClInclude Include="src\feedback.h" />
+    <ClInclude Include="src\learner.h" />
+    <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2d.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dBaseShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dCircle.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dContactListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dConvexPoly.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dEdge.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dPolygon.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dPolygonUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dRect.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dRender.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Box2D.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2BroadPhase.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2Collision.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2Distance.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2DynamicTree.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\b2TimeOfImpact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2ChainShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2CircleShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2EdgeShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2PolygonShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Collision\Shapes\b2Shape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2BlockAllocator.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2Draw.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2GrowableStack.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2Math.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2Settings.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2StackAllocator.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Common\b2Timer.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2Body.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2ContactManager.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2Fixture.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2Island.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2TimeStep.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2World.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\b2WorldCallbacks.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2CircleContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2Contact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2ContactSolver.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2EdgeAndCircleContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2EdgeAndPolygonContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Contacts\b2PolygonContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2DistanceJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2FrictionJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2GearJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2Joint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2MotorJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2MouseJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2PrismaticJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2PulleyJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2RevoluteJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2RopeJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2WeldJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\src\Box2D\Rope\b2Rope.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src\ConvexDecomposition\b2Polygon.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\ConvexDecomposition\src\ConvexDecomposition\b2Triangle.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\src\triangle\assert.hpp" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\src\triangle\del_interface.hpp" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\src\triangle\dpoint.hpp" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\src\triangle\triangle.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\src\triangle\triangle_impl.hpp" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\src\ofxGrt.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\src\ofxGrtBarPlot.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\src\ofxGrtMatrixPlot.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\src\ofxGrtSettings.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\src\ofxGrtTimeseriesPlot.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\AdaBoost.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\AdaBoostClassModel.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\WeakClassifiers\DecisionStump.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\WeakClassifiers\RadialBasisFunction.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\AdaBoost\WeakClassifiers\WeakClassifier.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\ANBC\ANBC.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\ANBC\ANBC_Model.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\BAG\BAG.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTree.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTreeClusterNode.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTreeNode.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTreeThresholdNode.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DecisionTree\DecisionTreeTripleFeatureNode.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\DTW\DTW.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\FiniteStateMachine\FiniteStateMachine.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\FiniteStateMachine\FSMParticle.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\FiniteStateMachine\FSMParticleFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\GMM\GMM.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\GMM\MixtureModel.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\HMM\ContinuousHiddenMarkovModel.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\HMM\DiscreteHiddenMarkovModel.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\HMM\HMM.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\HMM\HMMEnums.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\KNN\KNN.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\MinDist\MinDist.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\MinDist\MinDistModel.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\ParticleClassifier\ParticleClassifier.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\ParticleClassifier\ParticleClassifierParticleFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\RandomForests\RandomForests.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\Softmax\Softmax.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\Softmax\SoftmaxModel.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\SVM\LIBSVM\libsvm.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\SVM\SVM.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClassificationModules\SwipeDetector\SwipeDetector.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\ClusterTree\ClusterTree.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\ClusterTree\ClusterTreeNode.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\GaussianMixtureModels\GaussianMixtureModels.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\HierarchicalClustering\HierarchicalClustering.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\KMeans\KMeans.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ClusteringModules\SelfOrganizingMap\SelfOrganizingMap.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\ContextModules\Gate.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\BernoulliRBM\BernoulliRBM.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\EvolutionaryAlgorithm\EvolutionaryAlgorithm.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\EvolutionaryAlgorithm\Individual.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\GridSearch\GridSearch.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\LeastSquares\LinearLeastSquares.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\MeanShift\MeanShift.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\MovementDetector\MovementDetector.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\ParticleFilter\Particle.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\ParticleFilter\ParticleFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\ParticleSwarmOptimization\ParticleSwarmOptimization.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\ParticleSwarmOptimization\PSOParticle.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\PrincipalComponentAnalysis\PrincipalComponentAnalysis.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\Tree\Node.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreAlgorithms\Tree\Tree.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\Classifier.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\Clusterer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\Context.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\FeatureExtraction.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\GestureRecognitionPipeline.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\GRTBase.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\MLBase.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\PostProcessing.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\PreProcessing.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\CoreModules\Regressifier.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\ClassificationData.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\ClassificationDataStream.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\ClassificationSample.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\Matrix.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\MatrixFloat.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\RegressionData.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\RegressionSample.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\TimeSeriesClassificationData.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\TimeSeriesClassificationSample.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\TimeSeriesPositionTracker.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\UnlabelledData.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\Vector.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\DataStructures\VectorFloat.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\EnvelopeExtractor\EnvelopeExtractor.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\FFT\FastFourierTransform.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\FFT\FFT.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\FFT\FFTFeatures.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\KMeansFeatures\KMeansFeatures.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\KMeansQuantizer\KMeansQuantizer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\MovementIndex\MovementIndex.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\MovementTrajectoryFeatures\MovementTrajectoryFeatures.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\RBMQuantizer\RBMQuantizer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\SOMQuantizer\SOMQuantizer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\TimeDomainFeatures\TimeDomainFeatures.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\TimeseriesBuffer\TimeseriesBuffer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\FeatureExtractionModules\ZeroCrossingCounter\ZeroCrossingCounter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\GRT.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PostProcessingModules\ClassLabelChangeFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PostProcessingModules\ClassLabelFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PostProcessingModules\ClassLabelTimeoutFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\DeadZone.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\Derivative.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\DoubleMovingAverageFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\FIRFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\HighPassFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\LeakyIntegrator.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\LowPassFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\MedianFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\MovingAverageFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\RMSFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\SavitzkyGolayFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\PreProcessingModules\WeightedAverageFilter.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\ArtificialNeuralNetworks\MLP\MLP.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\ArtificialNeuralNetworks\MLP\Neuron.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\LinearRegression\LinearRegression.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\LogisticRegression\LogisticRegression.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\MultidimensionalRegression\MultidimensionalRegression.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\RegressionTree\RegressionTree.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\RegressionModules\RegressionTree\RegressionTreeNode.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Cholesky.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\CircularBuffer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ClassificationResult.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ClassTracker.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\CommandLineParser.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\DataType.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\DebugLog.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Dict.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\DynamicType.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\EigenvalueDecomposition.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ErrorLog.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\FileParser.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\GRTCommon.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\GRTException.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\GRTTypedefs.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\GRTVersionInfo.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\IndexedDouble.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\InfoLog.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Log.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\LUDecomposition.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Metrics.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\MinMax.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Observer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ObserverManager.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\PeakDetection.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Random.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\RangeTracker.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\SVD.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TestingLog.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TestInstanceResult.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TestResult.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ThreadPool.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\ThresholdCrossingDetector.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Timer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TimeSeriesClassificationSampleTrimmer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TimeStamp.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TrainingDataRecordingTimer.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TrainingLog.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\TrainingResult.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\Util.h" />
+    <ClInclude Include="..\..\..\addons\ofxGrt\libs\grt\GRT\Util\WarningLog.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
+    <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h" />
+    <ClInclude Include="src\user.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="icon.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
