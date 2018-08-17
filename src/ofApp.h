@@ -13,11 +13,21 @@
 #include "ofxGui.h"
 #include "learner.h"
 #include "feedback.h"
+#include "confetti.h"
+
 #define MAX_USERS 3
 #define NUM_DRINKS 1
+#define NUM_HIGHSCORE 3
+
+#define VIDEO_W 320
+#define VIDEO_H 240
 
 
-
+struct highscore {
+	int person;
+	double time;
+	vector<ofImage>imgs;
+};
 
 class ofApp : public ofBaseApp {
     
@@ -43,7 +53,7 @@ public:
     void exit();
     
     
-    
+	confetti confettis;
     
     float getAngle(ofVec2f p1, ofVec2f p2){
         return float(atan2(p2.y - p1.y, p2.x - p1.x) * 180 / PI);
@@ -85,6 +95,15 @@ public:
 	double highScoreTime;
 	int highScorePerson;
 	double highScoreCounter;
+	vector<highscore>highscores;
+	double frameNum;
+
+	void sort() {
+		// std::sort(std::begin(highscores), std::end(highscores))
+		std::sort(highscores.begin(), highscores.end(),
+			[](highscore const & a, highscore const & b) -> bool
+		{ return a.time < b.time; });
+	}
 
     user bartender;
     GestureLearner classifier;

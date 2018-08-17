@@ -5,9 +5,12 @@ void ofApp::setup() {
     
     r.setup(7000);
     
+	confettis.setup();
+
     test.listDevices();
-    test.setDeviceID(2);
-    test.setup(SCALE_Y, SCALE_X);
+	test.setDeviceID(2);
+
+    test.setup(VIDEO_W, VIDEO_H);
     
     ofEnableAlphaBlending();
     ofEnableAntiAliasing();
@@ -183,6 +186,8 @@ void ofApp::setup() {
         cout << dir.getName(i) << endl;
     }
     chainevent.setTo(PLAYING);
+
+
 }
 
 
@@ -381,6 +386,11 @@ void ofApp::update() {
             if(chainevent.isfirstframe){
 				feedback.removeDrawable(5, 0.01);
 				feedback.removeDrawable(1, 0.2);
+
+				feedback.removeDrawable(7, 0.5); // poses in bottom
+				feedback.removeDrawable(8, 0.5); // poses in bottom
+				feedback.removeDrawable(9, 0.5); // poses in bottom
+
 				feedback.addImage(&speech_red, WIDTH / 2, yellow_box, 763, 389, 1, 0.2);
 				feedback.addImage(&bodyPartImages[8], WIDTH / 2 + (763 / 2 - 20), red_box, 210*0.7, 318*0.7, 1);
                 //feedback.addImage(&speech, WIDTH/2, yellow_box, 763, 389, 1);
@@ -389,10 +399,15 @@ void ofApp::update() {
                 feedback.addText("Hit all three swag poses to", messageX, messageY + line1, 2, false, 1., ofColor(34,38,76));
                 feedback.addText("open the drink valve", messageX, messageY + line1 + line2, 2, false, 1., ofColor(34,38,76));
                 chainevent.isfirstframe = false;
+
+				for (int i = 0; i < 3; i++)
+					feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT/3 - 200, WIDTH / 3, HEIGHT / 3, 7+i, 0.2, ofColor(20, 20, 200), 100);
+
 				cout << "sat to start" << endl;
             }
 			unsigned int sec = chainevent.getDuration() - chainevent.getTime();
 			feedback.changeText(2, "¡Preparar - " + ofToString(sec) + "!");
+			highScoreCounter = 0.0;
 			//cout << "¡Preparar - " + ofToString(chainevent.getDuration() - chainevent.getTime(), 0) + "!" << endl;
             break;
         }
@@ -400,6 +415,7 @@ void ofApp::update() {
 			
 
             if(chainevent.isfirstframe){
+				// feedback.setMaxAlpha(7, 255);
                 //feedback.addImage(speech,WIDTH/2 - 763/2, yellow_box, 763, 389, 1);
                 feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
@@ -422,6 +438,9 @@ void ofApp::update() {
 			
 
             if(chainevent.isfirstframe){
+				// feedback.setMaxAlpha(8, 255);
+				feedback.setMaxAlpha(7, 255, ofColor(255));
+
                 feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
 				feedback.addImage(&poseImages[drinkSequence[1]], WIDTH / 2, top, WIDTH, HEIGHT, 5, 0.1);
@@ -439,6 +458,9 @@ void ofApp::update() {
         case POSE3: {
 			
             if(chainevent.isfirstframe){
+				// feedback.setMaxAlpha(9, 255);
+				feedback.setMaxAlpha(8, 255, ofColor(255));
+
                 feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
 				feedback.addImage(&poseImages[drinkSequence[2]], WIDTH / 2, top, WIDTH, HEIGHT, 5, 0.1);
@@ -455,7 +477,12 @@ void ofApp::update() {
         case POUR: {
 			bartender.playAnimation("hurra", animationSpeed);
             if(chainevent.isfirstframe){
-				
+				feedback.setMaxAlpha(9, 255, ofColor(255));
+
+				//feedback.removeDrawable(7, 0.5); // poses in bottom
+				//feedback.removeDrawable(8, 0.5); // poses in bottom
+				//feedback.removeDrawable(9, 0.5); // poses in bottom
+
                 feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
 				feedback.removeDrawable(1, 0.2);
@@ -465,10 +492,32 @@ void ofApp::update() {
                 feedback.addText("Your drink is being poured!", messageX, messageY + line1, 2, false, 1., ofColor(34,38,76));
 				serial.writeByte('o');
 				
-				if (highScoreTime == 0 || highScoreCounter < highScoreTime) {
-					highScoreTime = highScoreCounter;
-					highScorePerson = session;
+				
+
+				bool popped = false;
+				// cout << highscores.size() << endl;
+				if (highscores.size() == NUM_HIGHSCORE) {
+					if(highScoreCounter < highscores.back().time) {
+						highscores.pop_back();
+						popped = true;
+					}
 				}
+				if (popped || highscores.size() < NUM_HIGHSCORE) {
+					highscore h;
+					h.time = highScoreCounter;
+					h.person = session;
+					for (int i = 0; i<3; i++) {
+						cout << "ass";
+						ofImage img;
+						img.load("images\\session_" + ofToString(session) + ofToString(i) + ".png");
+						cout << "fuck";
+						h.imgs.push_back(img);
+					}
+					cout << "shit" << endl;
+					highscores.push_back(h);
+					sort();
+				}
+
 				session++;
 
 				chainevent.isfirstframe = false;
@@ -481,13 +530,14 @@ void ofApp::update() {
 			// cout << "elebrate" << endl;
 			if (chainevent.isfirstframe) {
 				feedback.removeDrawable(2, 0.5);
-				unsigned int sec = MAX(highScoreCounter - highScoreTime, 0);
-				string s = sec == 0 ? "Amazing!" : "Pretty good!";
+				float hScore = highscores.size() > 0 ? highscores[0].time : 10000;
+				float sec = highScoreCounter - hScore;
+				string s = sec <= 0 ? "Amazing!" : "Pretty good!";
 
-				string ss = sec == 0 ? "You were the fastest so far!" : ofToString(sec) + " sec from the highscore!";
+				string ss = sec <= 0 ? "You were the fastest so far!" : ofToString(MAX(sec, 0.1), 1) + " sec from the highscore!";
 				
 				feedback.addText(s, messageX, messageY, 2, true, 1., ofColor(34, 38, 76));
-				feedback.addText(ofToString(highScoreCounter, 0) + " seconds!", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
+				feedback.addText(ofToString(highScoreCounter, 1) + " seconds!", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
 				feedback.addText(ss, messageX, messageY + line1 + line2, 2, false, 1., ofColor(34, 38, 76));
 				chainevent.isfirstframe = false;
 			}
@@ -502,6 +552,10 @@ void ofApp::update() {
             if(chainevent.isfirstframe){
                 feedback.removeDrawable(2, 0.5);
                 feedback.removeDrawable(1, 0.5);
+
+				feedback.removeDrawable(7, 0.3); // poses in bottom
+				feedback.removeDrawable(8, 0.4); // poses in bottom
+				feedback.removeDrawable(9, 0.5); // poses in bottom
             }
 			highScoreCounter = 0.0;
 				
@@ -526,6 +580,11 @@ void ofApp::update() {
 				feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
 				feedback.removeDrawable(1, 0.2);
+				
+				feedback.removeDrawable(7, 0.1); // poses in bottom
+				feedback.removeDrawable(8, 0.2); // poses in bottom
+				feedback.removeDrawable(9, 0.3); // poses in bottom
+
 				feedback.addImage(&speech, WIDTH / 2, yellow_box, 763, 389, 1);
 				feedback.addText("¡Rapido rapido!", messageX, messageY, 2, true, 1., ofColor(34, 38, 76));
 				feedback.addText("Better luck next time!", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
@@ -556,15 +615,26 @@ void ofApp::update() {
                 feedback.removeDrawable(2, 0.5);
                 feedback.removeDrawable(1, 0.5);
 				feedback.removeDrawable(5, 0.5);
+
+				feedback.removeDrawable(7, 0.1); // poses in bottom
+				feedback.removeDrawable(8, 0.2); // poses in bottom
+				feedback.removeDrawable(9, 0.3); // poses in bottom
+
                 feedback.addImage(&speech, WIDTH/2, yellow_box, 763, 389, 1);
-                feedback.addText("¡Hola Senor!", messageX, messageY, 2, true, 1., ofColor(34,38,76));
-                feedback.addText("Step right up to", messageX, messageY + line1, 2, false, 1., ofColor(34,38,76));
-                feedback.addText("get your drink", messageX, messageY + line1 + line2, 2, false, 1., ofColor(34,38,76));
+				string s = highscores.size() > 0 ? "The highscore" : "¡Hola Senor!";
+				if (highscores.size() > 0) {
+					for(int i = 0; i<highscores.size(); i++)
+						feedback.addText("#"+ofToString(i+1) +": " + ofToString(highscores[i].time, 1), (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - 40, 2, false, 1., ofColor(255, 200, 6));
+				}
+				else {
+					feedback.addText("Step right up beat the", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
+					feedback.addText("highscore and get a drink", messageX, messageY + line1 + line2, 2, false, 1., ofColor(34, 38, 76));
+				}
+                feedback.addText(s, messageX, messageY + (highscores.size() > 0)*line1, 2, true, 1., ofColor(34,38,76));
                 chainevent.isfirstframe = false;
             }
 			if (numHumansInView == 0) {
 				chainevent.setTo(PLAYING);
-				cout << "playing from no one" << endl;
 			}
 			break;
         }
@@ -611,8 +681,7 @@ void ofApp::pose(int _user, int _posenum) {
 		jumpToNext = false;
 	}
 	if (chainevent.getDuration() - chainevent.getTime() < 0.1) {
-		if(_posenum > 0)chainevent.setTo(TRYAGAIN);
-		else chainevent.setTo(RESET);
+		chainevent.setTo(TRYAGAIN);
 	}
 }
 
@@ -622,38 +691,69 @@ void ofApp::draw() {
     render.begin();
     ofClear(0);
 	feedback.draw(0, 0);
-    ofPushMatrix();
-	ofTranslate(0, top);
-	ofSetColor(255);
+    
+	switch (chainevent.getName()) {
+		case NOONE: {
+			ofPushMatrix();
+			ofTranslate(0, top);
+			ofSetColor(255);
+			ofSetColor(255, MAX(chainevent.getTime() * 100, 255));
+			drawUserWithPngs(bartender.circlePoints, false);
+			ofPopMatrix();
 
+			confettis.draw();
 
-	if (chainevent.getName() == NOONE || chainevent.getName() == TRYAGAIN || chainevent.getName() == POUR || chainevent.getName() == CELEBRATE) {
-		ofSetColor(255, MAX(chainevent.getTime() * 100, 255));
-		drawUserWithPngs(bartender.circlePoints, false);
-		// cout << "drawing bar" << endl;
-	}
-	else {
-		ofSetColor(255);
-		for (int i = 0; i < MIN(numHumans, theUsers.size()); i++) {
-			drawUserWithPngs(theUsers[i].circlePoints, true);
+			
+			if (highscores.size() > 0) {
+				frameNum += ofGetLastFrameTime() * 3.;
+				int f = frameNum;
+				f = f % 3;
+				int w = WIDTH / 4;
+				int h = w * VIDEO_H / VIDEO_W;
+				ofSetColor(255);
+				for (int i = 0; i < highscores.size(); i++) {
+					ofPushMatrix();
+					ofTranslate((WIDTH / 3 * i) + WIDTH / 6, HEIGHT - h / 2 - 150);
+					ofRotateDeg(-90);
+					highscores[i].imgs[f].draw(-w / 2, -h / 2, w, h);
+					ofPopMatrix();
+				}
+			}
+			break;
+		}
+		case POUR: {}
+		case CELEBRATE: {
+			confettis.draw();
+		}
+		case TRYAGAIN: {
+			ofPushMatrix();
+			ofTranslate(0, top);
+			ofSetColor(255);
+			ofSetColor(255, MAX(chainevent.getTime() * 100, 255));
+			drawUserWithPngs(bartender.circlePoints, false);
+			ofPopMatrix();
+			break;
+		}
+
+		default: {
+			ofSetColor(255);
+			ofPushMatrix();
+			ofTranslate(0, top);
+			ofSetColor(255);
+			for (int i = 0; i < MIN(numHumans, theUsers.size()); i++) {
+				drawUserWithPngs(theUsers[i].circlePoints, true);
+			}
+			ofPopMatrix();
 		}
 	}
-    ofPopMatrix();
-   
-    
     render.end();
     
     
-    ofPushMatrix();
-	
+    ofPushMatrix();	
 	if (!fullscreen) {
 		ofScale(0.3f, 0.3f);
 	}
-	//ofTranslate(WIDTH / 2, HEIGHT / 2);
-	//if(fullscreen)ofRotateDeg(-90);
-
-	ofSetHexColor(0x22264C);
-	ofDrawRectangle(0, 0, WIDTH, HEIGHT);
+	ofBackgroundHex(0x22264C);
 	ofSetColor(255);
 	render.draw(0, 0);
 

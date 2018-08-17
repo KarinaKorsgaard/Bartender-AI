@@ -22,6 +22,8 @@ struct drawable{
 	bool dynamic = false;
     ofColor color;
     int w, h, x, y;
+	int maxAlpha = 255;
+	float from = 0;
 };
 class Feedback{
 
@@ -35,7 +37,7 @@ public:
         small.load("Apercu-Bold.ttf", 40);
         large.load("Apercu-Medium.ttf", 66);
     }
-    void addImage(ofImage * img, int x, int y, int w, int h, int _iid, float trans = 1., ofColor col = ofColor(255)){
+    void addImage(ofImage * img, int x, int y, int w, int h, int _iid, float trans = 1., ofColor col = ofColor(255), int _maxAlpha = 255){
         drawable d;
         d.img = img;
         d.isImage = true;
@@ -46,8 +48,21 @@ public:
         d.h = h;
         d.x = x;
         d.y = y;
+		d.maxAlpha = _maxAlpha;
         drawables.push_back(d);
     }
+	void setMaxAlpha(int _iid, int alpha, ofColor col = NULL) {
+		for (int i = 0; i<drawables.size(); i++) {
+			if (drawables[i].iid == _iid && !drawables[i].remove) {
+				drawables[i].timer = 0.0;
+				drawables[i].from = drawables[i].maxAlpha;
+				drawables[i].maxAlpha = alpha;
+				if (col != NULL)drawables[i].color = col;
+				// drawables[i].timer = 0.0;
+				// drawables[i].transitiontime = trans;
+			}
+		}
+	}
 	bool do_change;
 	string changeString;
 	int changeId;
@@ -91,7 +106,7 @@ public:
                 drawables[i].alpha = ease(drawables[i].timer, 255, 0, drawables[i].transitiontime);
                 if(drawables[i].alpha<0.1)drawables.erase(drawables.begin()+i);
             }
-            else drawables[i].alpha = ease(drawables[i].timer, 0, 255, drawables[i].transitiontime);
+            else drawables[i].alpha = ease(drawables[i].timer, drawables[i].from, drawables[i].maxAlpha, drawables[i].transitiontime);
         }
     }
     
