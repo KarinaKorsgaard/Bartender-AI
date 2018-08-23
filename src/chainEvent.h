@@ -19,6 +19,7 @@ typedef enum {
     POSE3,
 	POUR,
     TRYAGAIN,
+	PREPARE,
     PAUSE,
     RESET,
     TOOMANY,

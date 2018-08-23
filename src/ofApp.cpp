@@ -7,10 +7,10 @@ void ofApp::setup() {
     
 	confettis.setup();
 
-    test.listDevices();
-	test.setDeviceID(2);
+    //test.listDevices();
+	//test.setDeviceID(2);
 
-    test.setup(VIDEO_W, VIDEO_H);
+    //test.setup(VIDEO_W, VIDEO_H);
     
     ofEnableAlphaBlending();
     ofEnableAntiAliasing();
@@ -107,14 +107,15 @@ void ofApp::setup() {
     chainevent.addEvent(3., BEGIN_LEARNING);
     chainevent.addEvent(3., LEARNING);
     chainevent.addEvent(20., TRAINING, true);
-    chainevent.addEvent(5., PLAYING);
-    chainevent.addEvent(3., POSE1, true);
+    chainevent.addEvent(3., PLAYING);
+	chainevent.addEvent(1., PREPARE, true);
+    chainevent.addEvent(3., POSE1);
     chainevent.addEvent(3., POSE2);
     chainevent.addEvent(3., POSE3);
     chainevent.addEvent(2., POUR);
 	chainevent.addEvent(5., CELEBRATE);
 	chainevent.addEvent(3., RESET);
-	chainevent.addEvent(3., TRYAGAIN);
+	chainevent.addEvent(2., TRYAGAIN);
 	// chainevent.addEvent(3., TOOMANY, true);
 	chainevent.addEvent(3., NOONE, true);
     
@@ -180,7 +181,7 @@ void ofApp::setup() {
         bodyPartImages.push_back(img);
         cout << dir.getName(i) << endl;
     }
-    chainevent.setTo(PLAYING);
+    chainevent.setTo(NOONE);
 
 
 }
@@ -208,99 +209,86 @@ void ofApp::update() {
      */
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     isFrameNew = false;
-    
-    while (r.hasWaitingMessages()) {
-        ofxOscMessage m;
-        r.getNextMessage(m);
-        
-		//cout << numHumans <<" "<< m.getAddress()<<endl;
-        ///cout << "something" << endl;
-        /* bodies / 72057594037928883 / hands / Left
-         / bodies / 72057594037928883 / hands / Right
-         / bodies / 72057594037928883 / joints / SpineBase
-         / bodies / 72057594037928883 / joints / SpineMid
-         / bodies / 72057594037928883 / joints / Neck
-         / bodies / 72057594037928883 / joints / Head
-         / bodies / 72057594037928883 / joints / ShoulderLeft
-         / bodies / 72057594037928883 / joints / ElbowLeft
-         / bodies / 72057594037928883 / joints / WristLeft
-         / bodies / 72057594037928883 / joints / HandLeft
-         / bodies / 72057594037928883 / joints / ShoulderRight
-         / bodies / 72057594037928883 / joints / ElbowRight
-         / bodies / 72057594037928883 / joints / WristRight
-         / bodies / 72057594037928883 / joints / HandRight
-         / bodies / 72057594037928883 / joints / HipLeft
-         / bodies / 72057594037928883 / joints / KneeLeft
-         / bodies / 72057594037928883 / joints / AnkleLeft
-         / bodies / 72057594037928883 / joints / FootLeft
-         / bodies / 72057594037928883 / joints / HipRight
-         / bodies / 72057594037928883 / joints / KneeRight
-         / bodies / 72057594037928883 / joints / AnkleRight
-         / bodies / 72057594037928883 / joints / FootRight
-         / bodies / 72057594037928883 / joints / SpineShoulder
-         / bodies / 72057594037928883 / joints / HandTipLeft
-         / bodies / 72057594037928883 / joints / ThumbLeft
-         / bodies / 72057594037928883 / joints / HandTipRight
-         / bodies / 72057594037928883 / joints / ThumbRight
-         */
-        //cout << m.getAddress() << endl;
-        // cout << m.getAddress() << endl;
+	
+	while (r.hasWaitingMessages()) {
+		ofxOscMessage m;
+		r.getNextMessage(m);
+		// vector<int>updatedUsers;
 
+		int id = ofToInt(ofSplitString(m.getAddress(), "person").back());
+		//if (id > 0)cout << m.getAddress() << endl;
 
-            int id = ofToInt(ofSplitString(m.getAddress(), "person").back());
-			//if (id > 0)cout << m.getAddress() << endl;
-            if (id<theUsers.size()) {
-                float centerX = 0.f;
-                float centerY = 0.f;
-                int xTotal = 0;
-                int yTotal = 0;
-
-                int indx = 0;
-                for (int i = 0; i < m.getNumArgs(); i += 3) {
-                    if (m.getArgType(i) == 102) {
-                        float x = 1. - (m.getArgAsFloat(i) / SCALE_X);
-                        float y = m.getArgAsFloat(i + 1) / SCALE_Y;
-                        if(x > 0 && y>0){
-                            centerX += x;
-                            xTotal ++;
-                            centerY += y;
-                            yTotal ++;
-                        }
-                        
-                        theUsers[id].addPoint(indx, x, y);
-                        indx++;
-                    }
-                }
-                centerX /= xTotal;
-                centerY /= yTotal;
-            }
-        
-    }
-    
-    
-    
-    int userInView = -1;
-	numHumansInView = -1;
-	numHumans = theUsers.size();
-
-    for (int i = 0; i < theUsers.size(); i++) {
-        theUsers[i].update();
-		if (theUsers[i].isRemoved > 1.) {
-			numHumans--;
-
+		if (id<theUsers.size()) {
+			float centerX = 0.f;
+			float centerY = 0.f;
+			int xTotal = 0;
+			int yTotal = 0;
+			vector<ofVec2f>tempPoints;
+			int indx = 0;
+			for (int i = 0; i < m.getNumArgs(); i += 3) {
+				if (m.getArgType(i) == 102) {
+					float x = 1. - (m.getArgAsFloat(i) / SCALE_X);
+					float y = m.getArgAsFloat(i + 1) / SCALE_Y;
+					if (x > 0 && y>0) {
+						centerX += x;
+						xTotal++;
+						centerY += y;
+						yTotal++;
+					}
+					tempPoints.push_back(ofVec2f(x, y));
+					theUsers[id].addPoint(indx, x, y);
+					indx++;
+				}
+			}
+			centerX /= xTotal;
+			centerY /= yTotal;
+			theUsers[id].centerPoint = ofVec2f(centerX, centerY);
+			/*float minDist = 10000000;
+			int user = -1;
+			for (int i = 0; i < theUsers.size(); i++) {
+				float dist = ofVec2f(centerX, centerY).distance(theUsers[i].centerPoint);
+				//bool isUpdated = false;
+				//for (int u = 0; u < updatedUsers.size(); u++)
+				//	if (updatedUsers[u] == i) isUpdated = true;
+				if (dist < minDist) {
+					user = i;
+					minDist = dist;
+					//cout << "theuser us" << i << endl;
+				}
+			}
+			// cout << user << " s user" << endl;
+			theUsers[user].isRemoved = 0.0;
+			theUsers[user].centerPoint = ofVec2f(centerX, centerY);
+			theUsers[user].points = tempPoints;
+			//updatedUsers.push_back(user);
+			*/
 		}
-		else if (theUsers[i].zeroCounter < 1.5) {
-            numHumansInView ++;
-            userInView = i;
-			//cout << "removed= " << theUsers[i].isRemoved<< " zero: "<< theUsers[i].zeroCounter << endl;
-        }
-    }
 
-	if (numHumansInView>0) {
-		//chainevent.setTo(TOOMANY);
-		 //cout << "too many? " << numHumansInView << " total " << numHumans << endl;
 	}
-	else if (numHumansInView<0) {
+    
+	// numHumansInView = updatedUsers.size();
+	// cout << numHumansInView << endl;
+    userInView = -1;
+	numHumansInView = 0;
+
+	ofVec2f center = ofVec2f(0.5, 0.5);
+	float minDist = 10000000;
+	
+	for (int i = 0; i < theUsers.size(); i++) {
+		theUsers[i].update();
+		if (theUsers[i].isRemoved < 1.1) numHumansInView++;
+		if (numHumansInView > 0) {
+
+			float dist = center.distance(theUsers[i].centerPoint);
+			if (dist < minDist) {
+				minDist = dist;
+				userInView = i;
+			}
+		}
+	}
+
+
+	if (numHumansInView==0) {
 		chainevent.setTo(NOONE);
 		// cout << "no one here? " << numHumansInView << " total " << numHumans << endl;
 	}
@@ -409,7 +397,7 @@ void ofApp::update() {
 
 				for (int i = 0; i < 3; i++) {
 					drawable d;
-					feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT / 3, WIDTH / 3, HEIGHT / 3, 7 + i, 0.3, 1.*i + 1.);
+					feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT / 3, WIDTH / 3, HEIGHT / 3, 7 + i, 0.3, .5*i);
 
 				}
 					//feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT/3, WIDTH / 3, HEIGHT / 3, 7+i, 0.5*i+0.3);
@@ -425,6 +413,44 @@ void ofApp::update() {
 			//cout << "¡Preparar - " + ofToString(chainevent.getDuration() - chainevent.getTime(), 0) + "!" << endl;
             break;
         }
+		case PREPARE: {
+			highScoreCounter = 0.0;
+			if (chainevent.isfirstframe) {
+				feedback.removeDrawable(5, 0.01);
+				feedback.removeDrawable(2, 0.2);
+
+				feedback.removeDrawable(7, 0.1); // poses in bottom
+				feedback.removeDrawable(8, 0.2); // poses in bottom
+				feedback.removeDrawable(9, 0.3); // poses in bottom
+
+				//feedback.addImage(&speech_red, WIDTH / 2, yellow_box, 763, 389, 1, 0.2);
+				//feedback.addImage(&bodyPartImages[8], WIDTH / 2 + (763 / 2 - 20), red_box, 210 * 0.7, 318 * 0.7, 1);
+				//feedback.addImage(&speech, WIDTH/2, yellow_box, 763, 389, 1);
+				// feedback.addImage(&bodyPartImages[8], yellow_box, 863, 50, (1240 / 810) * 50, 1);
+				feedback.addText("Ready?", messageX, messageY, 2, true, 1., ofColor(34, 38, 76), true);
+				feedback.addText("Raise your arms", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
+				feedback.addText("to begin!", messageX, messageY + line1 + line2, 2, false, 1., ofColor(34, 38, 76));
+				chainevent.isfirstframe = false;
+				feedback.addImage(&poseImages[0], WIDTH / 2, top, WIDTH, HEIGHT, 5, 0.1, 0.0, ofColor(200), 200);
+
+				//feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT/3, WIDTH / 3, HEIGHT / 3, 7+i, 0.5*i+0.3);
+
+				// cout << "sat to start" << endl;
+			}
+
+			user u = theUsers[userInView];
+			GRT::VectorFloat sample = getSample(u);
+			//cout << sample.size() << endl;
+			classifier.updateSample(sample);
+			int currentPose = classifier.label;
+
+			if ((currentPose == 0 && classifier.probability > prababilityThreshold) || jumpToNext) {
+				cout << "raised arm" << endl;
+				chainevent.next();
+			}
+			break;
+
+		}
         case POSE1: {
 			
 
@@ -588,6 +614,11 @@ void ofApp::update() {
             k += k >= std::max(i, j);
             
             drinkSequence.clear();
+			if (i == 0) {
+				int pj = j;
+				j = i;
+				i = pj;
+			}
             drinkSequence = {i, j, k};
             cout << i<<j<<k << endl;
             
@@ -654,7 +685,7 @@ void ofApp::update() {
                 feedback.addText(s, messageX, messageY, 2, true, 1., ofColor(34,38,76));
                 chainevent.isfirstframe = false;
             }
-			if (numHumansInView == 0) {
+			if (numHumansInView > 0) {
 				chainevent.setTo(PLAYING);
 			}
 			break;
@@ -688,6 +719,7 @@ void ofApp::update() {
 void ofApp::pose(int _user, int _posenum) {
 	user u = theUsers[_user];
 	GRT::VectorFloat sample = getSample(u);
+	//cout << sample.size() << endl;
 	classifier.updateSample(sample);
 	int currentPose = classifier.label;
 
@@ -768,8 +800,13 @@ void ofApp::draw() {
 			ofPushMatrix();
 			ofTranslate(0, top);
 			ofSetColor(255);
-			for (int i = 0; i < MIN(numHumans, theUsers.size()); i++) {
+			for (int i = 0; i < MIN(numHumansInView, theUsers.size()); i++) {
+				if (i == userInView) ofSetColor(255);
+				else ofSetColor(255, 200);
+					//ofDrawBitmapStringHighlight(ofToString(i), theUsers[i].circlePoints[0]);
 				drawUserWithPngs(theUsers[i].circlePoints, true);
+				//ofDrawBitmapStringHighlight(ofToString(i), theUsers[i].circlePoints[0]);
+
 			}
 			ofPopMatrix();
 		}
@@ -780,12 +817,18 @@ void ofApp::draw() {
     
     
     ofPushMatrix();	
+
 	if (!fullscreen) {
-		ofScale(0.3f, 0.3f);
+		//ofScale(0.3f, 0.3f);
 	}
+	ofTranslate(HEIGHT/2, WIDTH/2);
+
+	//if(fullscreen) {
+		ofRotate(90);
+	//}
 	ofBackgroundHex(0x22264C);
 	ofSetColor(255);
-	render.draw(0, 0);
+	render.draw(-WIDTH /2, -HEIGHT/2);
 
     ofPopMatrix();
     

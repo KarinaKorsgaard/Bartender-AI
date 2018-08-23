@@ -52,7 +52,7 @@ public:
     void reset();
     void exit();
     
-    
+	int userInView;
 	confetti confettis;
     
     float getAngle(ofVec2f p1, ofVec2f p2){

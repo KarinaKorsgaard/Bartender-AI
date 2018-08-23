@@ -29,6 +29,7 @@ public:
 	double zeroCounter = 0.0;
 	double introduced = 0.0;
 
+	ofVec2f centerPoint;
     void setup(ofxBox2d* box2d ) {
 
         //anchor.setup(box2d.getWorld(), 20, ofGetHeight()/2, 4);
@@ -128,6 +129,9 @@ public:
 				circlePoints[i] = circles[i]->getPosition();
 
 			}
+		}
+		else {
+			centerPoint = ofVec2f(50, 50);
 		}
 		if (zeroPoints < 4) zeroCounter += ofGetLastFrameTime();
 		else zeroCounter = 0.0;
