@@ -24,6 +24,7 @@ struct drawable{
     int w, h, x, y;
 	int maxAlpha = 255;
 	float from = 0;
+	float delay = 0.0;
 };
 class Feedback{
 
@@ -37,7 +38,7 @@ public:
         small.load("Apercu-Bold.ttf", 40);
         large.load("Apercu-Medium.ttf", 66);
     }
-    void addImage(ofImage * img, int x, int y, int w, int h, int _iid, float trans = 1., ofColor col = ofColor(255), int _maxAlpha = 255){
+    void addImage(ofImage * img, int x, int y, int w, int h, int _iid, float trans = 1., float _delay = 0.0, ofColor col = ofColor(255), int _maxAlpha = 255){
         drawable d;
         d.img = img;
         d.isImage = true;
@@ -49,6 +50,7 @@ public:
         d.x = x;
         d.y = y;
 		d.maxAlpha = _maxAlpha;
+		d.delay = _delay;
         drawables.push_back(d);
     }
 	void setMaxAlpha(int _iid, int alpha, ofColor col = NULL) {
@@ -106,7 +108,7 @@ public:
                 drawables[i].alpha = ease(drawables[i].timer, 255, 0, drawables[i].transitiontime);
                 if(drawables[i].alpha<0.1)drawables.erase(drawables.begin()+i);
             }
-            else drawables[i].alpha = ease(drawables[i].timer, drawables[i].from, drawables[i].maxAlpha, drawables[i].transitiontime);
+            else if(drawables[i].timer > drawables[i].delay)drawables[i].alpha = ease(drawables[i].timer-drawables[i].delay, drawables[i].from, drawables[i].maxAlpha, drawables[i].transitiontime);
         }
     }
     

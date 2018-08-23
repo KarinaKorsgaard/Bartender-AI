@@ -83,11 +83,6 @@ void ofApp::setup() {
     
     
     feedback.setup();
-    float aspect = logo.getHeight()/logo.getWidth();
-    feedback.addImage(&logo, WIDTH/2, 200, 817, aspect * 817, 100, 5.);
-    
-    aspect = backgound.getHeight()/backgound.getWidth();
-    feedback.addImage(&backgound, WIDTH/2, HEIGHT - aspect*WIDTH, WIDTH, aspect*WIDTH, 100, 5.);
     
     box2d.init();
     box2d.setGravity(0, 0.0);
@@ -387,26 +382,33 @@ void ofApp::update() {
 				feedback.removeDrawable(5, 0.01);
 				feedback.removeDrawable(1, 0.2);
 
-				feedback.removeDrawable(7, 0.5); // poses in bottom
-				feedback.removeDrawable(8, 0.5); // poses in bottom
-				feedback.removeDrawable(9, 0.5); // poses in bottom
+				feedback.removeDrawable(7, 0.1); // poses in bottom
+				feedback.removeDrawable(8, 0.2); // poses in bottom
+				feedback.removeDrawable(9, 0.3); // poses in bottom
 
 				feedback.addImage(&speech_red, WIDTH / 2, yellow_box, 763, 389, 1, 0.2);
 				feedback.addImage(&bodyPartImages[8], WIDTH / 2 + (763 / 2 - 20), red_box, 210*0.7, 318*0.7, 1);
                 //feedback.addImage(&speech, WIDTH/2, yellow_box, 763, 389, 1);
 				// feedback.addImage(&bodyPartImages[8], yellow_box, 863, 50, (1240 / 810) * 50, 1);
-                feedback.addText("¡Preparar - " + ofToString(chainevent.getDuration() - chainevent.getTime(), 0) +"!", messageX, messageY, 2, true, 1., ofColor(34,38,76), true);
-                feedback.addText("Hit all three swag poses to", messageX, messageY + line1, 2, false, 1., ofColor(34,38,76));
-                feedback.addText("open the drink valve", messageX, messageY + line1 + line2, 2, false, 1., ofColor(34,38,76));
+                feedback.addText("¡Get ready!", messageX, messageY, 2, true, 1., ofColor(34,38,76), true);
+                feedback.addText("Hit these three swag poses", messageX, messageY + line1, 2, false, 1., ofColor(34,38,76));
+                feedback.addText("in time to win a drink!", messageX, messageY + line1 + line2, 2, false, 1., ofColor(34,38,76));
                 chainevent.isfirstframe = false;
 
-				for (int i = 0; i < 3; i++)
-					feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT/3 - 200, WIDTH / 3, HEIGHT / 3, 7+i, 0.2, ofColor(20, 20, 200), 100);
+				for (int i = 0; i < 3; i++) {
+					drawable d;
+					feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT / 3, WIDTH / 3, HEIGHT / 3, 7 + i, 0.3, 1.*i + 1.);
+
+				}
+					//feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT/3, WIDTH / 3, HEIGHT / 3, 7+i, 0.5*i+0.3);
 
 				cout << "sat to start" << endl;
             }
-			unsigned int sec = chainevent.getDuration() - chainevent.getTime();
-			feedback.changeText(2, "¡Preparar - " + ofToString(sec) + "!");
+			//unsigned int sec = chainevent.getDuration() - chainevent.getTime();
+
+			/*else if (chainevent.getTime() > 2 * chainevent.getDuration() / 4)feedback.changeText(2, "¡Set!");
+			else if(chainevent.getTime() > chainevent.getDuration()  / 4)feedback.changeText(2, "¡Ready!");
+			*/
 			highScoreCounter = 0.0;
 			//cout << "¡Preparar - " + ofToString(chainevent.getDuration() - chainevent.getTime(), 0) + "!" << endl;
             break;
@@ -419,6 +421,10 @@ void ofApp::update() {
                 //feedback.addImage(speech,WIDTH/2 - 763/2, yellow_box, 763, 389, 1);
                 feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
+
+				feedback.removeDrawable(7, 0.1); // poses in bottom
+				feedback.removeDrawable(8, 0.2); // poses in bottom
+				feedback.removeDrawable(9, 0.3); // poses in bottom
 				//feedback.removeDrawable(1, 0.2);
 				//feedback.addImage(&speech_red, WIDTH / 2, yellow_box, 763, 389, 1);
 				//feedback.addImage(&bodyPartImages[8], WIDTH/2 + (763/2-105), red_box, 210, 318, 1);
@@ -429,8 +435,11 @@ void ofApp::update() {
                 //feedback.addText("open the drink valve", messageX, messageY + 60 + 40, 2, false, 1., ofColor(34,38,76));
                 chainevent.isfirstframe = false;
             }
-			pose(userInView, 0);
+			if(chainevent.getTime()>0.5)pose(userInView, 0);
 			highScoreCounter += ofGetLastFrameTime();
+			unsigned int sec = chainevent.getDuration() - chainevent.getTime();
+			//feedback.changeText(2, "¡Plantear Uno - " + ofToString(sec) + "!");
+
             break;
         }
     
@@ -439,7 +448,7 @@ void ofApp::update() {
 
             if(chainevent.isfirstframe){
 				// feedback.setMaxAlpha(8, 255);
-				feedback.setMaxAlpha(7, 255, ofColor(255));
+				// feedback.setMaxAlpha(7, 255, ofColor(255));
 
                 feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
@@ -459,7 +468,7 @@ void ofApp::update() {
 			
             if(chainevent.isfirstframe){
 				// feedback.setMaxAlpha(9, 255);
-				feedback.setMaxAlpha(8, 255, ofColor(255));
+				// feedback.setMaxAlpha(8, 255, ofColor(255));
 
                 feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
@@ -477,7 +486,7 @@ void ofApp::update() {
         case POUR: {
 			bartender.playAnimation("hurra", animationSpeed);
             if(chainevent.isfirstframe){
-				feedback.setMaxAlpha(9, 255, ofColor(255));
+				//feedback.setMaxAlpha(9, 255, ofColor(255));
 
 				//feedback.removeDrawable(7, 0.5); // poses in bottom
 				//feedback.removeDrawable(8, 0.5); // poses in bottom
@@ -626,11 +635,11 @@ void ofApp::update() {
 					for(int i = 0; i<highscores.size(); i++)
 						feedback.addText("#"+ofToString(i+1) +": " + ofToString(highscores[i].time, 1), (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - 40, 2, false, 1., ofColor(255, 200, 6));
 				}
-				else {
-					feedback.addText("Step right up beat the", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
-					feedback.addText("highscore and get a drink", messageX, messageY + line1 + line2, 2, false, 1., ofColor(34, 38, 76));
-				}
-                feedback.addText(s, messageX, messageY + (highscores.size() > 0)*line1, 2, true, 1., ofColor(34,38,76));
+				
+				feedback.addText("Step right up beat the", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
+				feedback.addText("highscore and get a drink", messageX, messageY + line1 + line2, 2, false, 1., ofColor(34, 38, 76));
+				
+                feedback.addText(s, messageX, messageY, 2, true, 1., ofColor(34,38,76));
                 chainevent.isfirstframe = false;
             }
 			if (numHumansInView == 0) {
@@ -690,7 +699,14 @@ void ofApp::draw() {
     
     render.begin();
     ofClear(0);
-	feedback.draw(0, 0);
+	float aspect = logo.getHeight() / logo.getWidth();
+	//feedback.addImage(&logo, WIDTH / 2, 200, 817, aspect * 817, 100, 5.);
+	logo.draw(WIDTH / 2 - 817 / 2, 200, 817, 817 * aspect);
+	//aspect = backgound.getHeight() / backgound.getWidth();
+	//feedback.addImage(&backgound, WIDTH / 2, HEIGHT - aspect*WIDTH, WIDTH, aspect*WIDTH, 100, 5.);
+	backgound.draw(0, HEIGHT - aspect*WIDTH, WIDTH, aspect*WIDTH);
+	
+	if(chainevent.getName()!=PLAYING)feedback.draw(0, 0);
     
 	switch (chainevent.getName()) {
 		case NOONE: {
@@ -746,6 +762,8 @@ void ofApp::draw() {
 			ofPopMatrix();
 		}
 	}
+	if (chainevent.getName() == PLAYING)feedback.draw(0, 0);
+
     render.end();
     
     
