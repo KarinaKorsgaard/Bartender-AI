@@ -250,17 +250,29 @@ void ofApp::update() {
             int id = ofToInt(ofSplitString(m.getAddress(), "person").back());
 			//if (id > 0)cout << m.getAddress() << endl;
             if (id<theUsers.size()) {
-
+                float centerX = 0.f;
+                float centerY = 0.f;
+                int xTotal = 0;
+                int yTotal = 0;
 
                 int indx = 0;
                 for (int i = 0; i < m.getNumArgs(); i += 3) {
                     if (m.getArgType(i) == 102) {
                         float x = 1. - (m.getArgAsFloat(i) / SCALE_X);
                         float y = m.getArgAsFloat(i + 1) / SCALE_Y;
+                        if(x > 0 && y>0){
+                            centerX += x;
+                            xTotal ++;
+                            centerY += y;
+                            yTotal ++;
+                        }
+                        
                         theUsers[id].addPoint(indx, x, y);
                         indx++;
                     }
                 }
+                centerX /= xTotal;
+                centerY /= yTotal;
             }
         
     }
