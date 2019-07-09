@@ -7,10 +7,10 @@ void ofApp::setup() {
     
 	confettis.setup();
 
-    //test.listDevices();
-	//test.setDeviceID(2);
+    test.listDevices();
+	test.setDeviceID(2);
 
-    //test.setup(VIDEO_W, VIDEO_H);
+    test.setup(VIDEO_W, VIDEO_H);
     
     ofEnableAlphaBlending();
     ofEnableAntiAliasing();
@@ -554,18 +554,20 @@ void ofApp::update() {
 					h.time = highScoreCounter;
 					h.person = session;
 					for (int i = 0; i<3; i++) {
-						cout << "ass";
+						
 						ofImage img;
 						img.load("images\\session_" + ofToString(session) + ofToString(i) + ".png");
-						cout << "fuck";
+						
 						h.imgs.push_back(img);
 					}
-					cout << "shit" << endl;
+					
 					highscores.push_back(h);
 					sort();
+
+					session++;
 				}
 
-				session++;
+				
 
 				chainevent.isfirstframe = false;
 
@@ -816,21 +818,11 @@ void ofApp::draw() {
     render.end();
     
     
-    ofPushMatrix();	
 
-	if (!fullscreen) {
-		//ofScale(0.3f, 0.3f);
-	}
-	ofTranslate(HEIGHT/2, WIDTH/2);
-
-	//if(fullscreen) {
-		ofRotate(90);
-	//}
 	ofBackgroundHex(0x22264C);
 	ofSetColor(255);
-	render.draw(-WIDTH /2, -HEIGHT/2);
+	render.draw(0,0);
 
-    ofPopMatrix();
     
     if(!fullscreen)gui.draw();
     
@@ -906,7 +898,7 @@ void ofApp::keyPressed(int key) {
     if (key == 's')classifier.save();
 	if (key == 'j')jumpToNext = true;
 	if (key == 'f')fullscreen = !fullscreen;
-	ofSetFullscreen(fullscreen);
+	// ofSetFullscreen(fullscreen);
 }
 
 //--------------------------------------------------------------

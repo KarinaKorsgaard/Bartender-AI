@@ -19,8 +19,8 @@
 #define NUM_DRINKS 1
 #define NUM_HIGHSCORE 3
 
-#define VIDEO_W 320
-#define VIDEO_H 240
+#define VIDEO_W 640
+#define VIDEO_H 480
 
 
 struct highscore {
