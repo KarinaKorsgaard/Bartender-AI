@@ -46,20 +46,24 @@ public:
     }
     
     void update() {
+        if (done) return;
         
-        if (!done) {
-            timers[eventNumber] += ofGetLastFrameTime();
-            if (timers[eventNumber] >= durations[eventNumber] + .3 && !looping[eventNumber]) {
-                timers[eventNumber] = 0.0;
-                eventNumber++;
-                isfirstframe = true;
-                if (eventNumber > timers.size() - 1) {
-                    // eventNumber = 0;
-                    // done = true;
-                    setToEmpty();
-                }
+        if (shouldGoToNextEvent()) {
+            timers[eventNumber] = 0.0;
+            eventNumber++;
+            isfirstframe = true;
+            if (eventNumber > timers.size() - 1) {
+                setToEmpty();
             }
         }
+        
+        timers[eventNumber] += ofGetLastFrameTime();
+    }
+    
+    bool shouldGoToNextEvent() {
+        if (looping[eventNumber]) return false;
+        if (timers[eventNumber] < durations[eventNumber] + .3) return false;
+        return true;
     }
     
     void beginEvents() {
@@ -71,30 +75,19 @@ public:
     }
     
     void setTo(State state) {
+        if (getName() == state) return;
+        std::vector<State>::iterator it = std::find(eventName.begin(), eventName.end(), state);
         
-		if (getName() != state) {
-			isfirstframe = true;
-			std::fill(timers.begin(), timers.end(), 0.0);
-			std::vector<State>::iterator it = std::find(eventName.begin(), eventName.end(), 22);
-			for (int i = 0; i<eventName.size(); i++) {
-				if (eventName[i] == state) {
-					eventNumber = i;
-					done = false;
-				}
-			}
-		}
-		
+        if (it != eventName.end()) {
+            eventNumber = std::distance(eventName.begin(), it);
+            setToEmpty(eventNumber);
+        }
     }
+    
     void setToEmpty(int i = 0) {
         isfirstframe = true;
-        if (i == 0) {
-            done = true;
-            eventNumber = 0;
-        }
-        else {
-            eventNumber = i;
-            done = false;
-        }
+        eventNumber = i;
+        done = eventNumber == 0 ? true : false;
     }
     
     int getEvent() {
