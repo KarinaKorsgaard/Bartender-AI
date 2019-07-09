@@ -54,8 +54,8 @@ public:
                 eventNumber++;
                 isfirstframe = true;
                 if (eventNumber > timers.size() - 1) {
-                    eventNumber = 0;
-                    done = true;
+                    // eventNumber = 0;
+                    // done = true;
                     setToEmpty();
                 }
             }
@@ -67,19 +67,15 @@ public:
         done = false;
         eventNumber = 0;
         isfirstframe = true;
-        for (int i = 0; i<timers.size(); i++) {
-            timers[i] = 0.0;
-        }
+		std::fill(timers.begin(), timers.end(), 0.0);
     }
     
     void setTo(State state) {
         
 		if (getName() != state) {
 			isfirstframe = true;
-			for (int i = 0; i<timers.size(); i++) {
-				timers[i] = 0.0;
-
-			}
+			std::fill(timers.begin(), timers.end(), 0.0);
+			std::vector<State>::iterator it = std::find(eventName.begin(), eventName.end(), 22);
 			for (int i = 0; i<eventName.size(); i++) {
 				if (eventName[i] == state) {
 					eventNumber = i;
