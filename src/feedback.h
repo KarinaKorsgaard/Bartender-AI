@@ -27,12 +27,15 @@ struct drawable{
 	float delay = 0.0;
 };
 class Feedback{
-
     ofTrueTypeFont small;
     ofTrueTypeFont large;
     
 public:
     vector<drawable>drawables;
+    bool do_change;
+    string changeString;
+    int changeId;
+    int dynamicText;
     
     void setup(){
         small.load("Apercu-Bold.ttf", 40);
@@ -59,21 +62,17 @@ public:
 				drawables[i].timer = 0.0;
 				drawables[i].from = drawables[i].maxAlpha;
 				drawables[i].maxAlpha = alpha;
-				if (col != NULL)drawables[i].color = col;
-				// drawables[i].timer = 0.0;
-				// drawables[i].transitiontime = trans;
+				if (col != NULL) drawables[i].color = col;
 			}
 		}
 	}
-	bool do_change;
-	string changeString;
-	int changeId;
+    
 	void changeText(int _iid, string t) {
 		do_change = true;
 		changeId = _iid;
 		changeString = t;
 	}
-	int dynamicText;
+    
     void addText(string str, int x, int y, int _iid, bool isLarge, float trans = 1., ofColor col = ofColor(255), bool isDynamic = false){
         drawable d;
         d.text = str;
@@ -96,19 +95,24 @@ public:
             }
         }
     }
+    
     void update(){
-        for(int i = 0; i<drawables.size(); i++){
-            drawables[i].timer+=ofGetLastFrameTime();
+        for (int i = 0; i<drawables.size(); i++){
+            drawables[i].timer += ofGetLastFrameTime();
+            
 			if (do_change && drawables[i].dynamic) {
 				drawables[i].text = changeString;
 				do_change = false;
 				//cout << "change text" << endl;
 			}
-            if(drawables[i].remove){
+            
+            if (drawables[i].remove){
                 drawables[i].alpha = ease(drawables[i].timer, 255, 0, drawables[i].transitiontime);
-                if(drawables[i].alpha<0.1)drawables.erase(drawables.begin()+i);
+                if (drawables[i].alpha<0.1)
+                    drawables.erase(drawables.begin()+i);
             }
-            else if(drawables[i].timer > drawables[i].delay)drawables[i].alpha = ease(drawables[i].timer-drawables[i].delay, drawables[i].from, drawables[i].maxAlpha, drawables[i].transitiontime);
+            else if (drawables[i].timer > drawables[i].delay)
+                drawables[i].alpha = ease(drawables[i].timer-drawables[i].delay, drawables[i].from, drawables[i].maxAlpha, drawables[i].transitiontime);
         }
     }
     
@@ -120,13 +124,13 @@ public:
         
         for(int i = 0; i<drawables.size(); i++){
             ofSetColor(drawables[i].color, drawables[i].alpha);
-            if(drawables[i].isImage){
+            if (drawables[i].isImage){
                 drawables[i].img->draw(drawables[i].x-(drawables[i].w/2), drawables[i].y, drawables[i].w, drawables[i].h);
             }
-            else if(drawables[i].isLarge){
+            else if (drawables[i].isLarge){
                 large.drawString(drawables[i].text, -large.getStringBoundingBox(drawables[i].text, 0, 0).width/2 + drawables[i].x, drawables[i].y);
             }
-            else{
+            else {
                 small.drawString(drawables[i].text, -small.getStringBoundingBox(drawables[i].text, 0, 0).width/2 + drawables[i].x, drawables[i].y);
             }
         }

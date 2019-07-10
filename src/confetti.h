@@ -55,6 +55,7 @@ public:
 			confettis[i].draw();
 		}
 	}
+    
 private:
 	vector<confet>confettis;
 };
