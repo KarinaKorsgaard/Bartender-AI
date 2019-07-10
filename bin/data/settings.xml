@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<group>
+	<left>0.325</left>
+	<right>0.375</right>
+	<top>0.03</top>
+	<bottom>0.95</bottom>
+	<scale_images>0.105</scale_images>
+	<bellyThreshold>0.325</bellyThreshold>
+	<yellow_box>412</yellow_box>
+	<yellow_red>648</yellow_red>
+	<prababilityThreshold>0.36</prababilityThreshold>
+	<addsamples>0</addsamples>
+	<clearSample>0</clearSample>
+	<train>0</train>
+	<body>
+		<torso>0, 0</torso>
+		<head>0, 0</head>
+		<s_torso>0.168367</s_torso>
+		<s_head>0.627551</s_head>
+		<part_0>0, 0</part_0>
+		<s_part_0>0.408163</s_part_0>
+		<part_1>0, 0</part_1>
+		<s_part_1>0.408163</s_part_1>
+		<part_2>0, 0</part_2>
+		<s_part_2>0.418367</s_part_2>
+		<part_3>0, 0</part_3>
+		<s_part_3>0.423469</s_part_3>
+		<part_4>0, 0</part_4>
+		<s_part_4>0.423469</s_part_4>
+		<part_5>0, 0</part_5>
+		<s_part_5>0.423469</s_part_5>
+		<part_6>0, 0</part_6>
+		<s_part_6>0.433673</s_part_6>
+		<part_7>0, 0</part_7>
+		<s_part_7>0.433673</s_part_7>
+		<part_8>0, 0</part_8>
+		<s_part_8>0.433673</s_part_8>
+		<bellyThreshold>0.719388</bellyThreshold>
+		<neck_ass>0.153061</neck_ass>
+		<ass_feet>0.0918367</ass_feet>
+		<ass_feet_p>0.0918367</ass_feet_p>
+		<neck_ass_p>0.183673</neck_ass_p>
+		<test_scale>0.346939</test_scale>
+	</body>
+	<user_top>375</user_top>
+	<neck_ass>0.07</neck_ass>
+	<ass_feet>0.08</ass_feet>
+	<animation_cut>0.285</animation_cut>
+	<animation_speed>0.57</animation_speed>
+	<ass_feet_p>0.165</ass_feet_p>
+	<neck_ass_p>0.235</neck_ass_p>
+	<test_scale>1</test_scale>
+	<head_x>891</head_x>
+	<head_y>640</head_y>
+	<head_scale>0.9</head_scale>
+	<scaleThreshold>0</scaleThreshold>
+	<threeposesX>237</threeposesX>
+	<threeposesY>1257</threeposesY>
+	<threeposesScale>0.91</threeposesScale>
+	<animationSpeed>30</animationSpeed>
+</group>
