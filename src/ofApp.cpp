@@ -182,7 +182,7 @@ void ofApp::setup() {
         cout << dir.getName(i) << endl;
     }
     chainevent.setTo(NOONE);
-
+	cout << "setup done" << endl;
 
 }
 
@@ -211,6 +211,7 @@ void ofApp::update() {
     isFrameNew = false;
 	
 	while (r.hasWaitingMessages()) {
+		cout << "while reading osc" << endl;
 		ofxOscMessage m;
 		r.getNextMessage(m);
 		// vector<int>updatedUsers;
@@ -699,7 +700,7 @@ void ofApp::update() {
 
     
     
-    
+	// cout << "before box2d update" << endl;
     box2d.update();
     
     if(addSamples){
@@ -714,7 +715,7 @@ void ofApp::update() {
         chainevent.setTo(TRAINING);
         train = false;
     }
-
+	// cout << "before echo arduino" << endl;
 	echoArduino();
 	if (serial.isInitialized())readArduino();
 }
@@ -911,28 +912,31 @@ void ofApp::keyReleased(int key) {
 void ofApp::echoArduino() {
     
     echoTimer += ofGetLastFrameTime();
-    if(echo && echoTimer > 30.){
+
+    if (echo && echoTimer > 30.){
         if(serial.isInitialized())serial.writeByte('q');
         echo = false;
         echoTimer = 0.0;
     }
-    if(echoTimer>5. && !echo) {
+    if (echoTimer>5. && !echo) {
+		cout << "try to initialise devices" << endl;
         serial.listDevices();
         vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 		for (int i = 0; i < deviceList.size(); i++)cout << deviceList[i].getDeviceName()<<endl;
         echoTimer = 0.0;
         int baud = 9600;
-        if(deviceList.size()>0)
-            serial.setup(deviceList[deviceCount%deviceList.size()].getDeviceID(), baud);
-        
+        if (deviceList.size()>0)
+            serial.setup(deviceList.back().getDeviceID(), baud);
+		cout << "device is setup" << endl;
         nTimesRead = 0;
         nBytesRead = 0;
         readTime = 0;
+		cout << "memset" << endl;
         memset(bytesReadString, 0, 4);
-        
+		cout << "before write" << endl;
         if(serial.isInitialized())
             serial.writeByte('q');
-        
+		cout << "after write" << endl;
         deviceCount++;
         cout<<"no echo"<<endl;
     }
