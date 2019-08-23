@@ -146,7 +146,7 @@ public:
     }
     void clearPoints(){ points.clear(); points.resize(18); }
     void print() {
-        cout << "person" << userId << " " ;
+        cout << "user >> person" << userId << " " ;
         for (auto p : points) {
             cout << p.x << " " << p.y;
         }

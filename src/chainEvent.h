@@ -49,8 +49,9 @@ public:
         if (done) return;
         
         if (shouldGoToNextEvent()) {
+			timers[eventNumber] = 0.0;
+			eventNumber++;
             timers[eventNumber] = 0.0;
-            eventNumber++;
             isfirstframe = true;
             if (eventNumber > timers.size() - 1) {
                 setToEmpty();
@@ -62,16 +63,18 @@ public:
     
     bool shouldGoToNextEvent() {
         if (looping[eventNumber]) return false;
-        if (timers[eventNumber] < durations[eventNumber] + .3) return false;
+        if (timers[eventNumber] < durations[eventNumber]) return false;
         return true;
     }
     
     void beginEvents() {
-        cout << "begin events" << endl;
+        cout << "chainevents>> begin events" << endl;
         done = false;
         eventNumber = 0;
         isfirstframe = true;
 		std::fill(timers.begin(), timers.end(), 0.0);
+
+		cout << "chainevent" << timers[eventNumber] << endl;
     }
     
     void setTo(State state) {
@@ -87,6 +90,7 @@ public:
     void setToEmpty(int i = 0) {
         isfirstframe = true;
         eventNumber = i;
+		std::fill(timers.begin(), timers.end(), 0.0);
         done = eventNumber == 0 ? true : false;
     }
     
@@ -100,7 +104,7 @@ public:
         return durations[eventNumber];
     }
     State getName() {
-        if (done)return EMPTY;
+        if (done) return EMPTY;
         else return eventName[eventNumber];
     }
 	

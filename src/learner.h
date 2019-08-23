@@ -15,8 +15,8 @@ public:
 	void setup() {
 		trainingData.setNumDimensions(18 * 2);
 
-		//setClassifier( RANDOM_FOREST_100 );
-		setClassifier(NAIVE_BAYES);
+		setClassifier( RANDOM_FOREST_100 );
+		//setClassifier(RANDOM_FOREST_10);
 		load();
 		train();
 

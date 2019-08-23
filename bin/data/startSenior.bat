@@ -1,0 +1,1 @@
+C:\Users\Molamil\Desktop\BartenderAi\of_v0.10.1_vs2017_release\apps\myApps\summerparty2\bin\SeniorAI.exe

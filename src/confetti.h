@@ -50,6 +50,7 @@ public:
 		}
 	}
 	void draw() {
+		ofFill();
 		for (int i = 0; i < confettis.size(); i++) {
 			confettis[i].update();
 			confettis[i].draw();

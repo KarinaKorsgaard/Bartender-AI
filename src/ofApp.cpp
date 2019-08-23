@@ -7,10 +7,10 @@ void ofApp::setup() {
     
 	confettis.setup();
 
-    test.listDevices();
-	test.setDeviceID(2);
 
-    test.setup(VIDEO_W, VIDEO_H);
+	test.setDeviceID(test.listDevices().size() - 1);
+
+    test.setup(test.getWidth(), test.getHeight());
     
     ofEnableAlphaBlending();
     ofEnableAntiAliasing();
@@ -184,6 +184,7 @@ void ofApp::setup() {
     chainevent.setTo(NOONE);
 	cout << "setup done" << endl;
 
+
 }
 
 
@@ -211,23 +212,27 @@ void ofApp::update() {
     isFrameNew = false;
 	
 	while (r.hasWaitingMessages()) {
-		cout << "while reading osc" << endl;
+
 		ofxOscMessage m;
 		r.getNextMessage(m);
-		// vector<int>updatedUsers;
 
 		int id = ofToInt(ofSplitString(m.getAddress(), "person").back());
+
+	
 		//if (id > 0)cout << m.getAddress() << endl;
 
-		if (id<theUsers.size()) {
+		if (id < theUsers.size()) {
 			float centerX = 0.f;
 			float centerY = 0.f;
 			int xTotal = 0;
 			int yTotal = 0;
 			vector<ofVec2f>tempPoints;
 			int indx = 0;
+
 			for (int i = 0; i < m.getNumArgs(); i += 3) {
 				if (m.getArgType(i) == 102) {
+
+
 					float x = 1. - (m.getArgAsFloat(i) / SCALE_X);
 					float y = m.getArgAsFloat(i + 1) / SCALE_Y;
 					if (x > 0 && y>0) {
@@ -236,33 +241,21 @@ void ofApp::update() {
 						centerY += y;
 						yTotal++;
 					}
+
 					tempPoints.push_back(ofVec2f(x, y));
 					theUsers[id].addPoint(indx, x, y);
 					indx++;
 				}
 			}
-			centerX /= xTotal;
-			centerY /= yTotal;
-			theUsers[id].centerPoint = ofVec2f(centerX, centerY);
-			/*float minDist = 10000000;
-			int user = -1;
-			for (int i = 0; i < theUsers.size(); i++) {
-				float dist = ofVec2f(centerX, centerY).distance(theUsers[i].centerPoint);
-				//bool isUpdated = false;
-				//for (int u = 0; u < updatedUsers.size(); u++)
-				//	if (updatedUsers[u] == i) isUpdated = true;
-				if (dist < minDist) {
-					user = i;
-					minDist = dist;
-					//cout << "theuser us" << i << endl;
-				}
+			if (xTotal != 0 && yTotal != 0) {
+				centerX /= xTotal;
+				centerY /= yTotal;
 			}
-			// cout << user << " s user" << endl;
-			theUsers[user].isRemoved = 0.0;
-			theUsers[user].centerPoint = ofVec2f(centerX, centerY);
-			theUsers[user].points = tempPoints;
-			//updatedUsers.push_back(user);
-			*/
+			else {
+				centerX = centerY = 0;
+			}
+
+			theUsers[id].centerPoint = ofVec2f(centerX, centerY);
 		}
 
 	}
@@ -379,7 +372,9 @@ void ofApp::update() {
             break;   
         }
         case PLAYING: {
-            if(chainevent.isfirstframe){
+            if(chainevent.isfirstframe) {
+				cout << "restarted" << endl;
+
 				feedback.removeDrawable(5, 0.01);
 				feedback.removeDrawable(1, 0.2);
 
@@ -402,8 +397,6 @@ void ofApp::update() {
 
 				}
 					//feedback.addImage(&poseImages[drinkSequence[i]], (WIDTH / 3 * i) + WIDTH / 6, HEIGHT - HEIGHT/3, WIDTH / 3, HEIGHT / 3, 7+i, 0.5*i+0.3);
-
-				cout << "sat to start" << endl;
             }
 			//unsigned int sec = chainevent.getDuration() - chainevent.getTime();
 
@@ -456,6 +449,7 @@ void ofApp::update() {
 			
 
             if(chainevent.isfirstframe){
+				cout << "pose 1" << endl;
 				// feedback.setMaxAlpha(7, 255);
                 //feedback.addImage(speech,WIDTH/2 - 763/2, yellow_box, 763, 389, 1);
                 feedback.removeDrawable(2, 0.5);
@@ -474,7 +468,7 @@ void ofApp::update() {
                 //feedback.addText("open the drink valve", messageX, messageY + 60 + 40, 2, false, 1., ofColor(34,38,76));
                 chainevent.isfirstframe = false;
             }
-			if(chainevent.getTime()>0.5)pose(userInView, 0);
+			if (chainevent.getTime() > 0.5) pose(userInView, 0);
 			highScoreCounter += ofGetLastFrameTime();
 			unsigned int sec = chainevent.getDuration() - chainevent.getTime();
 			//feedback.changeText(2, "¡Plantear Uno - " + ofToString(sec) + "!");
@@ -486,6 +480,7 @@ void ofApp::update() {
 			
 
             if(chainevent.isfirstframe){
+				cout << "pose 2" << endl;
 				// feedback.setMaxAlpha(8, 255);
 				// feedback.setMaxAlpha(7, 255, ofColor(255));
 
@@ -506,6 +501,7 @@ void ofApp::update() {
         case POSE3: {
 			
             if(chainevent.isfirstframe){
+				cout << "pose 3" << endl;
 				// feedback.setMaxAlpha(9, 255);
 				// feedback.setMaxAlpha(8, 255, ofColor(255));
 
@@ -539,36 +535,6 @@ void ofApp::update() {
                 feedback.addText("¡Hurra!", messageX, messageY, 2, true, 1., ofColor(34,38,76));
                 feedback.addText("Your drink is being poured!", messageX, messageY + line1, 2, false, 1., ofColor(34,38,76));
 				serial.writeByte('o');
-				
-				
-
-				bool popped = false;
-				// cout << highscores.size() << endl;
-				if (highscores.size() == NUM_HIGHSCORE) {
-					if(highScoreCounter < highscores.back().time) {
-						highscores.pop_back();
-						popped = true;
-					}
-				}
-				if (popped || highscores.size() < NUM_HIGHSCORE) {
-					highscore h;
-					h.time = highScoreCounter;
-					h.person = session;
-					for (int i = 0; i<3; i++) {
-						
-						ofImage img;
-						img.load("images\\session_" + ofToString(session) + ofToString(i) + ".png");
-						
-						h.imgs.push_back(img);
-					}
-					
-					highscores.push_back(h);
-					sort();
-
-					session++;
-				}
-
-				
 
 				chainevent.isfirstframe = false;
 
@@ -577,11 +543,12 @@ void ofApp::update() {
             break;
         }
 		case CELEBRATE: {
-			// cout << "elebrate" << endl;
 			if (chainevent.isfirstframe) {
+				cout << "celebrate" << endl;
 				feedback.removeDrawable(2, 0.5);
 				float hScore = highscores.size() > 0 ? highscores[0].time : 10000;
 				float sec = highScoreCounter - hScore;
+				cout << "current highscore " << hScore << " your time " << highScoreCounter << " diff " << sec << endl;
 				string s = sec <= 0 ? "Amazing!" : "Pretty good!";
 
 				string ss = sec <= 0 ? "You were the fastest so far!" : ofToString(MAX(sec, 0.1), 1) + " sec from the highscore!";
@@ -589,7 +556,32 @@ void ofApp::update() {
 				feedback.addText(s, messageX, messageY, 2, true, 1., ofColor(34, 38, 76));
 				feedback.addText(ofToString(highScoreCounter, 1) + " seconds!", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
 				feedback.addText(ss, messageX, messageY + line1 + line2, 2, false, 1., ofColor(34, 38, 76));
+
+				bool popped = false;
+				// cout << highscores.size() << endl;
+				if (highscores.size() == NUM_HIGHSCORE) {
+					if (highScoreCounter < highscores.back().time) {
+						highscores.pop_back();
+						popped = true;
+					}
+				}
+				if (popped || highscores.size() < NUM_HIGHSCORE) {
+					highscore h;
+					h.time = highScoreCounter;
+					h.person = session;
+					for (int i = 0; i < 3; i++) {
+
+						ofImage img;
+						img.load("images\\session_" + ofToString(session) + ofToString(i) + ".png");
+						h.imgs.push_back(img);
+					}
+
+					highscores.push_back(h);
+					sort();
+				}
+
 				chainevent.isfirstframe = false;
+				session++;
 			}
 			if(session%2 == 0)bartender.playAnimation("hurra", animationSpeed);
 			else bartender.playAnimation("celebrate", animationSpeed);
@@ -623,15 +615,17 @@ void ofApp::update() {
 				i = pj;
 			}
             drinkSequence = {i, j, k};
-            cout << i<<j<<k << endl;
+            cout<< "drinkSequence" << i<<j<<k << endl;
             
             chainevent.setTo(PLAYING);
 			cout << "playing from reset" << endl;
             break;
         }
 		case TRYAGAIN: {
+			
 			bartender.playAnimation("ohno", animationSpeed);
 			if (chainevent.isfirstframe) {
+				cout << "try again" << endl;
 				feedback.removeDrawable(2, 0.5);
 				feedback.removeDrawable(5, 0.01);
 				feedback.removeDrawable(1, 0.2);
@@ -644,7 +638,8 @@ void ofApp::update() {
 				feedback.addText("¡Rapido rapido!", messageX, messageY, 2, true, 1., ofColor(34, 38, 76));
 				feedback.addText("Better luck next time!", messageX, messageY + line1, 2, false, 1., ofColor(34, 38, 76));
 				chainevent.isfirstframe = false;
-			} if (chainevent.getTime() > chainevent.getDuration() - 0.1) chainevent.setTo(RESET);
+				session++;
+			} if (chainevent.getTime() > chainevent.getDuration()) chainevent.setTo(RESET);
 
 			break;
 		}
@@ -689,6 +684,7 @@ void ofApp::update() {
                 chainevent.isfirstframe = false;
             }
 			if (numHumansInView > 0) {
+				cout << "humans reappeared / restart" << endl;
 				chainevent.setTo(PLAYING);
 			}
 			break;
@@ -726,17 +722,20 @@ void ofApp::pose(int _user, int _posenum) {
 	classifier.updateSample(sample);
 	int currentPose = classifier.label;
 
+	test.update();
+
 	if ((currentPose == drinkSequence[_posenum] && classifier.probability > prababilityThreshold) || jumpToNext)
 
 	{
-		test.update();
 		ofSaveImage(test.getPixels(), "images\\session_" + ofToString(session)+ ofToString(_posenum) + ".png");
+		cout << "saved image. session: " << session << " pose nr " << _posenum << endl;
 		//cout << "pose is right, from: " << chainevent.getName() << " too: ";
 		chainevent.next();
 		//cout << chainevent.getName() << endl;
 		jumpToNext = false;
 	}
 	if (chainevent.getDuration() - chainevent.getTime() < 0.1) {
+		cout << "out of time " << chainevent.getDuration() << " " << chainevent.getTime() << endl;
 		chainevent.setTo(TRYAGAIN);
 	}
 }
@@ -768,17 +767,28 @@ void ofApp::draw() {
 
 			
 			if (highscores.size() > 0) {
+
+				for (int i = 0; i < highscores.size(); i++) {
+					for (int j = 0; j < 3; j++) {
+						if (!highscores[i].imgs[j].isAllocated()) {
+							highscores[i].imgs[j].load("images\\session_" + ofToString(highscores[i].person) + ofToString(j) + ".png");
+						}
+					}
+				}
+
+
 				frameNum += ofGetLastFrameTime() * 3.;
 				int f = frameNum;
 				f = f % 3;
 				int w = WIDTH / 4;
-				int h = w * VIDEO_H / VIDEO_W;
+				int h = w * test.getHeight() / test.getWidth();
 				ofSetColor(255);
 				for (int i = 0; i < highscores.size(); i++) {
 					ofPushMatrix();
 					ofTranslate((WIDTH / 3 * i) + WIDTH / 6, HEIGHT - h / 2 - 150);
 					ofRotateDeg(-90);
-					highscores[i].imgs[f].draw(-w / 2, -h / 2, w, h);
+					if (highscores[i].imgs[f].isAllocated())
+						highscores[i].imgs[f].draw(-w / 2, -h / 2, w, h);
 					ofPopMatrix();
 				}
 			}
@@ -822,8 +832,8 @@ void ofApp::draw() {
 
 	ofBackgroundHex(0x22264C);
 	ofSetColor(255);
-	render.draw(0,0);
-
+	if (!fullscreen)render.draw(0,0, render.getWidth() / 2, render.getHeight() / 2 );
+	else render.draw(0, 0);
     
     if(!fullscreen)gui.draw();
     
@@ -898,8 +908,10 @@ void ofApp::keyPressed(int key) {
     if (key == 'd')debug = !debug;
     if (key == 's')classifier.save();
 	if (key == 'j')jumpToNext = true;
-	if (key == 'f')fullscreen = !fullscreen;
-	// ofSetFullscreen(fullscreen);
+	if (key == 'f') {
+		fullscreen = !fullscreen;
+	}
+	// 
 }
 
 //--------------------------------------------------------------
@@ -922,12 +934,20 @@ void ofApp::echoArduino() {
 		cout << "try to initialise devices" << endl;
         serial.listDevices();
         vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
-		for (int i = 0; i < deviceList.size(); i++)cout << deviceList[i].getDeviceName()<<endl;
+		for (int i = 0; i < deviceList.size(); i++)
+			cout << "deviceList" << deviceList[i].getDeviceName() << endl;
         echoTimer = 0.0;
         int baud = 9600;
-        if (deviceList.size()>0)
-            serial.setup(deviceList.back().getDeviceID(), baud);
-		cout << "device is setup" << endl;
+        if (deviceList.size()>0) {
+			string find = "USB";
+			for (int i = 0; i<deviceList.size(); i++) {
+				if (deviceList[i].getDeviceName().find(find) != std::string::npos) {
+					std::cout << "found!" << '\n';
+					serial.setup(deviceList[i].getDeviceID(), baud);
+					cout << "device is setup" << endl;
+				}
+			}
+		}
         nTimesRead = 0;
         nBytesRead = 0;
         readTime = 0;
